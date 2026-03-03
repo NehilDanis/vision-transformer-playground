@@ -1,3 +1,12 @@
-title: Transformer Playground
+# Docs theme configuration
 theme: minima
+
+# Page title & description
+title: Transformer Playground
+description: Building attention and Transformers from scratch in PyTorch
+
+# Disable automatic header navigation
+header_pages: []
+
+# Optional: Markdown engine
 markdown: kramdown
