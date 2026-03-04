@@ -1,0 +1,15 @@
+[project]
+name = "vision-transformer-playground"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "Nehil Danis", email = "nehild@outlook.com"},
+]
+dependencies = ["torch>=2.10.0", "torchvision>=0.25.0"]
+requires-python = "==3.13.*"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+distribution = false
