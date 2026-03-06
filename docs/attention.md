@@ -37,3 +37,11 @@ The transformers that use masked self attention, are called decoder only transfo
 
 They are trained in a **self-supervised manner**, meaning that during training, each token can see only itself and the tokens before it, and tries to predict the next token. There are no manual labels, the data itself provides the labels (the next token in the sequence).
 
+## Encoder Decoder Attention (Cross Attention)
+
+The first ever transformer model included an encoder that uses self attention, and a decoder that uses masked self attention. The transformer would use the encoder to create embeddings for keys and values, and use the decoder to create queries. Once the queries, keys and values are calculated the encoder-decoder attention is calculated just like self attention, using every similarity. This first transformer was based on something called **seq2seq** or encoder-decoder model.
+
+Transformers with encoder-decoder attention are used in Multi-Modal Models. For example the encoder is trained on images or sound, and later the contex aware embeddings from the encoder could be fed into text based decoder, in order to generate captions.
+
+
+
