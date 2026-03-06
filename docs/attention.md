@@ -43,5 +43,7 @@ The first ever transformer model included an encoder that uses self attention, a
 
 Transformers with encoder-decoder attention are used in Multi-Modal Models. For example the encoder is trained on images or sound, and later the contex aware embeddings from the encoder could be fed into text based decoder, in order to generate captions.
 
+## Multi-Head Attention
 
+Transformers usually uses multiple attention units in parallel. This is needed to capture different relationships between the tokens in a sequence, simultaneously.
 
