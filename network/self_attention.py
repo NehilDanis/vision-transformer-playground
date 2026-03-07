@@ -6,7 +6,8 @@ class SelfAttention(nn.Module):
     def __init__(self, embed_dim):
         super().__init__()
         self.embed_dim = embed_dim
-        torch.manual_seed(42)
+        
+        # torch.manual_seed(42)
         self.query_weights = nn.Linear(in_features=embed_dim, out_features=embed_dim, bias=False)
         self.key_weights = nn.Linear(in_features=embed_dim, out_features=embed_dim, bias=False)
         self.value_weights = nn.Linear(in_features=embed_dim, out_features=embed_dim, bias=False)

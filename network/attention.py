@@ -1,3 +1,5 @@
+from unittest import result
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -6,7 +8,7 @@ class Attention(nn.Module):
     def __init__(self, embed_dim):
         super().__init__()
         self.embed_dim = embed_dim
-        torch.manual_seed(42)
+        # torch.manual_seed(42)
         self.query_weights = nn.Linear(in_features=embed_dim, out_features=embed_dim, bias=False)
         self.key_weights = nn.Linear(in_features=embed_dim, out_features=embed_dim, bias=False)
         self.value_weights = nn.Linear(in_features=embed_dim, out_features=embed_dim, bias=False)
@@ -37,9 +39,10 @@ class MultiHeadAttention(nn.Module):
         # create bunch of attention heads
         self.heads = nn.ModuleList([Attention(embed_dim) for _ in range(num_heads)])
 
+        self.proj = nn.Linear(embed_dim * num_heads, embed_dim)
+
     def forward(self, encoding_q, encoding_k, encoding_v):
         ## run the data through all of the attention heads
-        return torch.cat([head(encoding_q, 
-                               encoding_k,
-                               encoding_v) 
-                          for head in self.heads], dim=-1)
+
+        concatanated_attention_scores = torch.cat([head(encoding_q, encoding_k, encoding_v) for head in self.heads], dim=-1)
+        return self.proj(concatanated_attention_scores)
