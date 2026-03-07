@@ -1,31 +1,4 @@
 from utils import generate_reverse_word_order_data
-"""
-Training script for a Transformer model on a reverse word order task.
-This script trains a Transformer model to reverse the order of words in sequences.
-The model is trained using cross-entropy loss, which expects raw logits (unnormalized
-scores) as input, not probabilities. The Transformer's output layer should produce
-logits directly without applying softmax, as F.cross_entropy() applies log_softmax
-internally for numerical stability.
-The training process:
-1. Generates synthetic data with sequences and their reversed counterparts
-2. Creates a DataLoader for batch processing
-3. Initializes a Transformer model
-4. Trains for multiple epochs using:
-    - Cross-entropy loss (expects logits from the model)
-    - Adam optimizer
-    - Backpropagation and gradient descent
-Parameters:
-     num_samples (int): Number of training samples to generate (default: 1000)
-     max_seq_len (int): Maximum sequence length (default: 20)
-     vocab_size (int): Size of the vocabulary (default: 50)
-     embedding_dim (int): Dimension of token embeddings (default: 16)
-     num_heads (int): Number of attention heads (default: 2)
-     num_layers (int): Number of transformer layers (default: 2)
-     batch_size (int): Batch size for training (default: 32)
-Note:
-     The optimizer initialization should be moved outside the training loop
-     to avoid reinitializing it at every batch.
-"""
 from network import Transformer
 from utils import WordOrderDataset
 
