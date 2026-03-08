@@ -5,7 +5,7 @@ description = "Default template for PDM package"
 authors = [
     {name = "Nehil Danis", email = "nehild@outlook.com"},
 ]
-dependencies = ["torch>=2.10.0", "torchvision>=0.25.0", "pytest>=9.0.2", "mlflow>=3.10.1"]
+dependencies = ["torch>=2.10.0", "torchvision>=0.25.0", "pytest>=9.0.2", "mlflow>=3.10.1", "matplotlib>=3.10.8", "seaborn>=0.13.2", "numpy>=2.4.2"]
 requires-python = "==3.13.*"
 readme = "README.md"
 license = {text = "MIT"}

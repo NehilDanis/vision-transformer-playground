@@ -5,7 +5,7 @@
 groups = ["default"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:b3fdd27834e14433b88d0638bc38df79b9e67c7e1de3ce740b88b008abb39a8f"
+content_hash = "sha256:967bf24d106b5a30b4ec439f9b98f37fb8e86571e424fe8e0b05b746e8a9bd06"
 
 [[metadata.targets]]
 requires_python = "==3.13.*"
@@ -1594,6 +1594,22 @@ files = [
     {file = "scipy-1.17.1-cp313-cp313t-win_amd64.whl", hash = "sha256:e30bdeaa5deed6bc27b4cc490823cd0347d7dae09119b8803ae576ea0ce52e4c"},
     {file = "scipy-1.17.1-cp313-cp313t-win_arm64.whl", hash = "sha256:a720477885a9d2411f94a93d16f9d89bad0f28ca23c3f8daa521e2dcc3f44d49"},
     {file = "scipy-1.17.1.tar.gz", hash = "sha256:95d8e012d8cb8816c226aef832200b1d45109ed4464303e997c5b13122b297c0"},
+]
+
+[[package]]
+name = "seaborn"
+version = "0.13.2"
+requires_python = ">=3.8"
+summary = "Statistical data visualization"
+groups = ["default"]
+dependencies = [
+    "matplotlib!=3.6.1,>=3.4",
+    "numpy!=1.24.0,>=1.20",
+    "pandas>=1.2",
+]
+files = [
+    {file = "seaborn-0.13.2-py3-none-any.whl", hash = "sha256:636f8336facf092165e27924f223d3c62ca560b1f2bb5dff7ab7fad265361987"},
+    {file = "seaborn-0.13.2.tar.gz", hash = "sha256:93e60a40988f4d65e9f4885df477e2fdaff6b73a9ded434c1ab356dd57eefff7"},
 ]
 
 [[package]]
