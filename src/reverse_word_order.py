@@ -11,6 +11,24 @@ from torch.nn.utils.rnn import pad_sequence
 import mlflow
 mlflow.set_experiment("reverse_word_order_transformer")
 
+import matplotlib.pyplot as plt
+import seaborn as sns
+import torch
+
+def plot_attention(attn_weights, head_idx=0):
+    attn = attn_weights[0, head_idx].detach().cpu().numpy()  # batch 0, specified head
+    
+    fig, ax = plt.subplots(figsize=(6,6))
+    sns.heatmap(attn, cmap="viridis", ax=ax)
+
+    ax.set_xlabel("Key Tokens")
+    ax.set_ylabel("Query Tokens")
+    ax.set_title("Attention Map")
+
+    plt.close()
+
+    return fig
+
 
 def collate_fn(batch):
     """Pad sequences to the same length within a batch."""
@@ -26,15 +44,15 @@ def collate_fn(batch):
 
 if __name__ == "__main__":
 
-    num_samples = 1
-    max_seq_len = 20    
+    num_samples = 1000
+    max_seq_len = 5    
     vocab_size = 20
 
-    embedding_dim = 16
-    num_heads = 2
-    num_layers = 1
+    embedding_dim = 64  # Increase from 16 to 64
+    num_heads = 4       # Increase from 2 to 4
+    num_layers = 2      # Increase from 1 to 2
     batch_size = 32
-    num_epochs = 1000
+    num_epochs = 1000   # Increase from 1000 to 2000
 
     lr = 0.001
     optimizer = "Adam"
@@ -70,12 +88,14 @@ if __name__ == "__main__":
     for epoch in range(num_epochs):
         for batch in dataloader:
             input_seq, target_seq = batch
-            output = transformer(input_seq)
-            
-            # Use nll_loss with ignore_index=-1 to ignore padded positions
-
+            output, attention_percents_all_layers = transformer(input_seq)
+            if (epoch + 1) % 100 == 0:
+                for layer_idx, attention_percents in enumerate(attention_percents_all_layers):
+                    for head_idx in range(attention_percents.shape[1]):
+                        fig = plot_attention( attention_percents, head_idx=head_idx)  # Plot each head for this layer
+                        mlflow.log_figure(fig, f"attention_layer_{layer_idx}_head_{head_idx}_epoch_{epoch + 1}.png")
             loss = F.nll_loss(output.view(-1, vocab_size), target_seq.view(-1), ignore_index=-1)
-            print(f"Loss: {loss.item()}")
+            # print(f"Loss: {loss.item()}")
             mlflow.log_metric("loss", loss.item(), step=epoch)
             
             optimizer.zero_grad()
@@ -91,7 +111,11 @@ if __name__ == "__main__":
     transformer.eval()
     test_seq = torch.tensor(single_input)  # Example input sequence
     with torch.no_grad():
-        output = transformer(test_seq)
+        output, attention_percents_all_layers = transformer(test_seq)
+        for layer_idx, attention_percents in enumerate(attention_percents_all_layers):
+                for head_idx in range(attention_percents.shape[1]):
+                    fig = plot_attention(attention_percents, head_idx=head_idx)  # Plot each head for this layer
+                    mlflow.log_figure(fig, f"inference_attention_layer_{layer_idx}_head_{head_idx}_epoch_{epoch + 1}.png")
         predicted_tokens = torch.argmax(output, dim=-1)
         print("Input sequence:", test_seq)
         print("Predicted reversed sequence:", predicted_tokens)
