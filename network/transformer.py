@@ -24,8 +24,10 @@ class Transformer(nn.Module):
         # in the batch will have the same positional encoding added to it.
         x = self.token_embedding(x)
         x = self.positional_encoding(x) 
+        attention_percents_all_layers = []
         for layer in self.layers:
-            x = layer(x, x, x)
+            x, attention_percents = layer(x, x, x)
+            attention_percents_all_layers.append(attention_percents)
 
         # Map to vocab probabilities
-        return F.log_softmax(self.fc_out(x), dim=-1)
+        return F.log_softmax(self.fc_out(x), dim=-1), attention_percents_all_layers

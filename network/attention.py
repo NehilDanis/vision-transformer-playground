@@ -30,7 +30,7 @@ class Attention(nn.Module):
         # applying the softmax to the scaled similarities, determines the percentage of attention that each token should pay to the other tokens in the sequence
         attention_percents = F.softmax(similarities, dim=-1)
         attention_scores = torch.matmul(attention_percents, V)
-        return attention_scores
+        return attention_scores, attention_percents
     
 class MultiHeadAttention(nn.Module):
     def __init__(self, embed_dim, num_heads=1):
@@ -44,5 +44,10 @@ class MultiHeadAttention(nn.Module):
     def forward(self, encoding_q, encoding_k, encoding_v):
         ## run the data through all of the attention heads
 
-        concatanated_attention_scores = torch.cat([head(encoding_q, encoding_k, encoding_v) for head in self.heads], dim=-1)
-        return self.proj(concatanated_attention_scores)
+        concatanated_attention_scores = torch.cat([head(encoding_q, encoding_k, encoding_v)[0] for head in self.heads], dim=-1)
+        
+        # calculate the attention percentages for each head and stack them together as well, to visualize them later
+        # shape batch_size, num_heads, seq_len, seq_len -> stacked_attention_percents
+        # shape batch_size, seq_len, embed_dim -> self.proj(concatanated_attention_scores)
+        stacked_attention_percents = torch.stack([head(encoding_q, encoding_k, encoding_v)[1] for head in self.heads], dim=1)
+        return self.proj(concatanated_attention_scores), stacked_attention_percents
