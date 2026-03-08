@@ -23,12 +23,12 @@ def collate_fn(batch):
 
 if __name__ == "__main__":
 
-    num_samples = 10
+    num_samples = 1
     max_seq_len = 20    
-    vocab_size = 50
+    vocab_size = 20
 
     embedding_dim = 16
-    num_heads = 1
+    num_heads = 2
     num_layers = 1
     batch_size = 32
 
@@ -51,6 +51,7 @@ if __name__ == "__main__":
             # Use nll_loss with ignore_index=-1 to ignore padded positions
 
             loss = F.nll_loss(output.view(-1, vocab_size), target_seq.view(-1), ignore_index=-1)
+            print(f"Loss: {loss.item()}")
             
             optimizer.zero_grad()
             loss.backward()
