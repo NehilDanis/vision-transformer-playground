@@ -7,9 +7,14 @@ title: Transformers
 
 Before attention mechanism, the token embeddings were static, so the word "bank" would have the same embedding regardless of whether it referred to a riverbank or a financial institution.
 
-Transformers, on the other hand, use attention to compute **context-aware embeddings**. By taking the dot product between queries and keys, attention measures the similarity between each token (or image patch, in the case of Vision Transformers). The resulting weights are then used to compute a weighted sum of the values for each token. As a result, each token’s representation incorporates information about its relationship to all other tokens in the sequence, capturing context and dependencies dynamically.
+Transformers, on the other hand, use attention to compute **context-aware embeddings**. By taking the dot product between queries and keys, attention measures the similarity between each token (or image patch, in the case of Vision Transformers). The resulting weights are then used to compute a weighted sum of the values for each token. As a result, each token’s representation incorporates information about its relationship to all other tokens in the sequence, capturing context and dependencies dynamically. For given query, key and values the attention can be calculated with the following formula.
+
+$$
+\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+$$
 
 There are different types of attentions. Altough the differences are subtle, they have huge effect on types of problems that can be addressed with each type of attention.
+
 
 ## Self Attention
 
@@ -32,6 +37,14 @@ In summary the decoder only transformers create generitive inputs that can be la
 ## Masked Self Attention
 
 On the other hand masked self attention, takes into account the similarities of a token in a squence with itself and every other token that comes before it.
+
+$$
+\text{MaskedAttention}(Q, K, V) = \text{softmax}\left(\frac{QK^T + M}{\sqrt{d_k}}\right)V
+$$
+
+where $M$ is a mask matrix with $-\infty$ for future positions and $0$ for allowed positions.
+
+The parts with -infinity values will get 0 after softmax. The attention percentage to those positions will be 0.
 
 The transformers that use masked self attention, are called decoder only transformers. They are used in tasks, such a predicting the next word in a sequence, or generating an answer to the promt. 
 
