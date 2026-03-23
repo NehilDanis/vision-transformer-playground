@@ -52,7 +52,7 @@ if __name__ == "__main__":
     num_heads = 4       # Increase from 2 to 4
     num_layers = 2      # Increase from 1 to 2
     batch_size = 32
-    num_epochs = 1000   # Increase from 1000 to 2000
+    num_epochs = 500   # Increase from 1000 to 2000
 
     lr = 0.001
     optimizer = "Adam"
@@ -104,7 +104,10 @@ if __name__ == "__main__":
         
         print(f"Epoch {epoch + 1}/{num_epochs} completed")
 
-    
+    # save the model and load later to visualize attention on test examples
+    model_path = "reverse_word_order_transformer.pth"
+    torch.save(transformer.state_dict(), model_path)
+    mlflow.log_artifact(model_path)
     # inference example
 
     single_input = data[0][0].unsqueeze(0)  # Get the first input sequence and add batch dimension
